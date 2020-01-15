@@ -5,3 +5,20 @@ body,
   padding: 0;
   margin: 0;
 }
+
+.line {
+  fill: none;
+  stroke-width: 2px;
+}
+
+.green {
+  stroke: green;
+}
+
+.blue {
+  stroke: blue;
+}
+
+.red {
+  stroke: red;
+}
