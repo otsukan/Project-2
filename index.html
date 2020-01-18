@@ -3,23 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <title>Project 2</title>
-  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" type='text/css' href="static/css/style.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css">
 
 </head> 
 
 <body>
-  <h1>Economic Stuff</h1>
-  <!-- The div that holds our map -->
-  <select id='selDataset1'></select> 
-  <select id='selDataset2'></select>
-  <div id='map-id'></div>
+    
+    <div class='container'>
+    <div class='row'>
+      <div class='col-md-12 jumbotron text-center' style='background:black'>
+        <h2 style='color:white'>Economic Stuff Dashboard</h2>
+        <p style='color:white'>Use the interactive charts below and discover some economics</p>
+      </div>
+    </div>
+    <div class='row'>
+      <div style="border-style:solid" id='first' class='col-md-6'>
+        <select  id='selDataset1'></select> 
+        <select  id='selDataset2'></select>
+        <div id='tooltip' style='position:relative;background-color:black;color:white;padding:5px;font-size:13px;'></div>
+        <div id='map-id'></div>
+        <button id="filter-btn" type="button">Filter</button>
+        <input id="country-name" type="text" placeholder="United States">
+      </div>
+      <div style="border-style:solid" id='second' class='col-md-6'>
+        <button id="filter-btn1" type="button">Filter</button>
+        <input id="country-name1" type="text" placeholder="United States">
+        <input id="country-name2" type="text" placeholder="China">
+        <div id='tooltip1' style='position:relative;background-color:black;color:white;padding:5px;font-size:13px;'></div>
+        <div id='map-id'></div>
+        <select id='selDataset3'></select> 
+      </div>
+    </div>
+  </div>
+  
+ 
   <!-- D3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
   <!-- MomentJS -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
   <!-- Our JavaScript -->
   <script type="text/javascript" src="static/js/logic.js"></script>
+  <script type="text/javascript"  src='static/js/logic1.js'></script>
 
 </body>
 

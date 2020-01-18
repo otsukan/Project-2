@@ -22,3 +22,40 @@ body,
 .red {
   stroke: red;
 }
+
+.font {
+  color:black;
+}
+
+.bottom {
+  margin-bottom:10px;
+}
+
+.back {
+  background-color: black;
+}
+
+.place {
+  position: relative;
+  /* width: 100px;
+  height: 100px;
+  left:400px;
+  top:100px; */
+}
+
+.tooltip {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  padding: 2px;
+  padding-top: 8px;
+  font: 12px sans-serif;
+  color: white;
+  text-align: center;
+  background: black;
+  border: 0;
+  border-radius: 10px;
+} */
+
+
+

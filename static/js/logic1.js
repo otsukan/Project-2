@@ -6,7 +6,7 @@ function init() {
     var svgHeight = 300;
 
     // creating a dictionary of margins for dimensions created above.
-    var margin = {top:50, right:100, bottom:20, left:50};
+    var margin = {top:50, right:40, bottom:20, left:50};
 
     // creating the width and height of the soon to come graph so it fits within dimensions created above by using the margins dictionary.
     var width = svgWidth - margin.left - margin.right;
@@ -14,7 +14,7 @@ function init() {
 
     // appending an svg element to the html body with width and height.
     var svg = d3
-        .select('#first')
+        .select('#second')
         .select('#map-id')
         .append('svg')
         .attr('width', svgWidth)
@@ -113,7 +113,7 @@ function init() {
         compiled[countries[k].toString()] = dict
         };
         // viewing the final hewly formmated compiled dictionary.
-        console.log('World Bank Data', compiled);
+    console.log('World Bank Data', compiled);
 
     // -------------------------------------------------------------------------------------------------------------------------
     //creating a dropdown menu. 
@@ -125,101 +125,102 @@ function init() {
         var factors = Object.keys(data['China'][0])
 
         // selecting a html element.
-        var dropdown1 = d3.select('#selDataset1');
+        var dropdown1 = d3.select('#selDataset3');
 
-        // looping, creating, and appending the data type names to option elements on the html page.
+         // looping, creating, and appending the data type names to option elements on the html page.
         for(var i = 1; i < factors.length; i++) {
             var cell = dropdown1.append('option');
             cell.text(factors[i]);
             cell.value = factors[i];
         }
-
-        // creating second dropdown menu/selecting html element.
-        var dropdown2 = d3.select('#selDataset2');
-
-        // looping, creating, and appending the data type names again using factors list created above.
-        for(var i = 1; i < factors.length; i++) {
-            var cell = dropdown2.append('option');
-            cell.text(factors[i]);
-            cell.value = factors[i];
-        }
     // ----------------------------------------------------------------------------------------------------------------------
-
     // creating the initial line graph.
 
-        // saving the United States dictionary to a variable.
-        var countrydata = Object.values(data['United States'])
-        
-        // saving d3.timeparse function to variable.
+        // saving the variable country dictionary to a variable.
+        var firstcountry = Object.values(data['United States'])
+
+         // saving a second variable country dictionary to a variable.
+        var secondcountry = Object.values(data['China'])
+
+         // saving d3.timeparse function to variable.
         var parseTime = d3.timeParse('%Y')
         var reverseparseTime = d3.timeFormat("%Y")
 
         // creating a x scale based on year.
         var xTimeScale = d3.scaleTime()
-            .domain(d3.extent(countrydata, d => parseTime(d.year)))
+            .domain(d3.extent(firstcountry, d => parseTime(d.year)))
             .range([0, width]);
 
-        // creating a y scale based on gpd.
-        var yLinearScale1 = d3.scaleLinear()
-            .domain([d3.min(countrydata, d => d.gdp_growth), d3.max(countrydata, d => d.gdp_growth)])
+        // creating a y scale and y axis based on the first or second variable country's gdp. Used if then statement for different data type reasons.
+        if(d3.max(firstcountry, d => d.gdp_growth) - d3.min(firstcountry, d => d.gdp_growth) > (d3.max(secondcountry, d => d.gdp_growth) - d3.min(secondcountry, d => d.gdp_growth))) {
+            var yLinearScale1 = d3.scaleLinear()
+            .domain([d3.min(firstcountry, d => d.gdp_growth), d3.max(firstcountry, d => d.gdp_growth)])
             .range([height, 0]);
+
+            var leftAxis = d3.axisLeft(yLinearScale1);
+        }
+        else {
+            var yLinearScale1 = d3.scaleLinear()
+            .domain([d3.min(secondcountry, d => d.gdp_growth), d3.max(secondcountry, d => d.gdp_growth)])
+            .range([height, 0]);
+
+            var leftAxis = d3.axisLeft(yLinearScale1);
+        }
 
         // creating x axis based on x scale.
         var bottomAxis = d3.axisBottom(xTimeScale);
-        
-        // creating left and right y axis based on y scale.
-        var leftAxis = d3.axisLeft(yLinearScale1);
-        var rightAxis = d3.axisRight(yLinearScale1);
-
-        // appending x axis to html svg element.
+   
+        // appending x axis to svg html element.
         chartGroup.append('g')
             .attr('transform', `translate(0, ${height})`)
             .call(bottomAxis);
 
-        // appending left y axis to html svg elemment.
+        // appending the left y axis to y scale.
         chartGroup.append('g')
             .classed('green', true)
             .call(leftAxis);
-
-        // appending right y axis to html svg element.
-        chartGroup.append('g')
-            .classed('blue', true)
-            .attr('transform', `translate(${width}, 0)`)
-            .call(rightAxis);
         
-        // creating a line based on gdp growth.
+        // creating a line based on gpd.
         var line1 = d3.line()
             .x(d => xTimeScale(parseTime(d.year)))
             .y(d => yLinearScale1(d.gdp_growth));
-
-        // appending the line to html/svg page based on countrydata/United States.
-        var line = chartGroup.append('path')
-            .data([countrydata])
+        
+        // appending a line to svg element based on firstcountry varaibles data.
+        chartGroup.append('path')
+            .data([firstcountry])
             .attr('d', line1)
             .classed('line green', true);
-            
-        var tooltip = d3.select('#tooltip');
+
+        // appending a line to svg element based on secondcountry variables data.
+        chartGroup.append('path')
+            .data([secondcountry])
+            .attr('d', line1)
+            .classed('line blue', true);
+
+        var tooltip = d3.select('#tooltip1');
 
         var tipBox = chartGroup.append('rect')
             .attr('width', width)
             .attr('height', height)
             .attr('opacity', 0)
-            .on('mousemove', drawTooltip)
-            .on('mouseout', removeTooltip);
+            .on('mousemove', drawTooltip1)
+            .on('mouseout', removeTooltip1);
 
-        function removeTooltip() {
+        function removeTooltip1() {
             if (tooltip) tooltip.style('display', 'none');
         }
 
-        function drawTooltip() {
+        function drawTooltip1() {
 
             var x0 = reverseparseTime(xTimeScale.invert(d3.mouse(this)[0]))
             
-            tooltip.html('United States '+ x0)
+            tooltip.html('Gdp Growth ' + x0)
                 .style('display', 'block')
-                .data(countrydata)
+                .data(firstcountry)
+                .data(secondcountry)
                 .append('div')
-                .html('Gdp Growth: ' + countrydata.find(h => h.year === x0).gdp_growth)
+                .html(`United States: ${firstcountry.find(h => h.year === x0).gdp_growth}
+                <br>China: ${secondcountry.find(h => h.year === x0).gdp_growth}</br>`)
         }
 
     }).catch(function(error) {
@@ -232,17 +233,17 @@ init();
 // ----------------------------------------------------------------------------------------------------------------------------
 // creating a function that will change the graph based on new inputs.
 
-function handleChange() {
+function handleChange2() {
     
-    // selecting an html element and saving to variable.
+     // selecting an html element and saving to variable.
     var panel = d3
-        .select('#first')
+        .select('#second')
         .select('#map-id')
     
     // clearing that html element.
     panel.html('')
 
-// ---------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------
 // creating the initial outline of the soon to come d3 line graph.
 
     // creating the dimensions of the space in the html that will hold line graphs.
@@ -250,7 +251,7 @@ function handleChange() {
     var svgHeight = 300;
 
     // creating a dictionary of margins for dimensions created above.
-    var margin = {top:50, right:100, bottom:20, left:90};
+    var margin = {top:50, right:40, bottom:20, left:50};
 
     // creating the width and height of the soon to come graph so it fits within dimensions created above by using the margins dictionary.
     var width = svgWidth - margin.left - margin.right;
@@ -258,7 +259,7 @@ function handleChange() {
 
     // appending an svg element to the html body with width and height.
     var svg = d3
-        .select('#first')
+        .select('#second')
         .select('#map-id')
         .append('svg')
         .attr('width', svgWidth)
@@ -267,9 +268,6 @@ function handleChange() {
     // creating a chart element within the svg element with a set orientaiton.
     var chartGroup = svg.append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`)
-// ------------------------------------------------------------------------------------------------------------------------
-
-// reconfiguring the json dictionary.
 
     // creating a connection to the created restful flask api that contains a json data object.
     d3.json('http://127.0.0.1:5000/').then(function(data) {
@@ -322,8 +320,8 @@ function handleChange() {
                                         // appending toinnermost dictionary.
                                         innerdict["unemployment_rate"] = data[j][key];
                                     }
-                                    // finding data related to current account.
-                                    else if(metric === 'Current account balance (% of GDP)') {
+                                     // finding data related to current account.
+                                     else if(metric === 'Current account balance (% of GDP)') {
                                         // appending toinnermost dictionary.
                                         innerdict["current_account"] = data[j][key];
                                     }
@@ -360,38 +358,50 @@ function handleChange() {
         // adding the middle dictionary that now has all the year data, rather than just one, for a country to the outtermost dictionary and making the middle dictionary's key the country's name. 
         compiled[countries[k].toString()] = dict
         };
-// -------------------------------------------------------------------------------------------------------------------------
+        // viewing the final hewly formmated compiled dictionary.
+    console.log('World Bank Data', compiled);
+
+    // -------------------------------------------------------------------------------------------------------------------------
     //creating a dropdown menu. 
 
-        // selecting and saving html element to variable.
-        var inputElement1 = d3.select('#selDataset1');
-
-        // saving the value in the saved element to variable.
-        var inputValue1 = inputElement1.property('value');
-
-        // doing same process as above for second variable.
-        var inputElement2 = d3.select('#selDataset2');
-
-        var inputValue2 = inputElement2.property('value');
-
-        // doing same as above but for country variable.
-        var countryinputelement = d3.select('#country-name')
         
-        // using if then statement to make countryvalue have value at the very beginning.
-        if(countryinputelement.property('value') === '') {
-            var countryvaluename = 'United States'
+        // selecting and saving html element to variable.
+        var inputElement = d3.select('#selDataset3');
+
+         // saving the value in the saved element to variable.
+        var inputValue = inputElement.property('value');
+
+        // selecting and saving html element to variable.
+        var firstcountryinputelement = d3.select('#country-name1')
+
+         // selecting and saving html element to variable.
+        var secondcountryinputelement = d3.select('#country-name2')
+        
+        // using if then statement to make firstcountryvalue and secondcountry to have value at the very beginning.
+        if(firstcountryinputelement.property('value') === '') {
+            var firstcountryvaluename = 'United States'
         }
         else {
-            var countryvaluename = countryinputelement.property('value')
+            var firstcountryvaluename = firstcountryinputelement.property('value')
         };
-// ----------------------------------------------------------------------------------------------------------------------
+
+        if(secondcountryinputelement.property('value') === '') {
+            var secondcountryvaluename = 'China'
+        }
+        else {
+            var secondcountryvaluename = secondcountryinputelement.property('value')
+        };
+    // ----------------------------------------------------------------------------------------------------------------------
     // creating the initial line graph.
 
-        // saving and creating better named variable based on ultimate dictionary.
+        // saving and creating better named variable based on ultimate dictionary
         var data = compiled
 
-        // saving variable country names dictionary to a variable.
-        var countryvalue = Object.values(data[countryvaluename])
+         // saving variable country names dictionary to a variable.
+        var firstcountry = Object.values(data[firstcountryvaluename])
+
+         // saving variable country names dictionary to a variable.
+        var secondcountry = Object.values(data[secondcountryvaluename])
 
         // creating a parsetime fucntion variable.
         var parseTime = d3.timeParse('%Y')
@@ -399,107 +409,107 @@ function handleChange() {
 
         // creating a x scale based on variable country.
         var xTimeScale = d3.scaleTime()
-            .domain(d3.extent(countryvalue, d => parseTime(d.year)))
+            .domain(d3.extent(firstcountry, d => parseTime(d.year)))
             .range([0, width]);
 
-        // creating y scale and left y axis(needed to do an if else statement to make graph work, because of differing data styles).
-        if(inputValue1 === 'gdp_growth' | inputValue1 === 'current_account') { 
-            var yLinearScale1 = d3.scaleLinear()
-                .domain([d3.min(countryvalue, d => d[inputValue1]), d3.max(countryvalue, d => d[inputValue1])])
-                .range([height, 0]);
-                
-            var leftAxis = d3.axisLeft(yLinearScale1)
-        }
-        else {
-            var yLinearScale1 = d3.scaleLinear()
-                .domain([0, d3.max(countryvalue, d => d[inputValue1])])
-                .range([height, 0]);
-
-            var leftAxis = d3.axisLeft(yLinearScale1)
-        };
-        // creating the y scale for the right axis.
-        if(inputValue2 === 'gdp_growth' | inputValue2 === 'current_account') { 
-            var yLinearScale2 = d3.scaleLinear()
-                .domain([d3.min(countryvalue, d => d[inputValue2]), d3.max(countryvalue, d => d[inputValue2])])
-                .range([height, 0]);
-
-            var rightAxis = d3.axisRight(yLinearScale2)
-        }
-        else {
-            var yLinearScale2 = d3.scaleLinear()
-                .domain([0, d3.max(countryvalue, d => d[inputValue2])])
-                .range([height, 0]);
-
-            var rightAxis = d3.axisRight(yLinearScale2)
-        };
-        
         // creating the x axis based on x scale. 
         var bottomAxis = d3.axisBottom(xTimeScale);
 
+        // creating a y scale and y axis based on the first or second variable country's gdp. Used if then statement for different data type reasons.
+        if(inputValue === 'gdp_growth' | inputValue === 'current_account') { 
+            
+            if(d3.max(firstcountry, d => d[inputValue]) > d3.max(secondcountry, d => d[inputValue])) {
+                var maxdomain = d3.max(firstcountry, d => d[inputValue])
+            }
+            else {
+                var maxdomain = d3.max(secondcountry, d => d[inputValue])
+            }
+            if(d3.min(firstcountry, d => d[inputValue]) < d3.min(secondcountry, d => d[inputValue])) {
+                var mindomain = d3.min(firstcountry, d => d[inputValue]) 
+            }
+            else {
+                var mindomain = d3.min(secondcountry, d => d[inputValue])
+            }
+            
+            // creating y scale based on min and max value found above.
+            var yLinearScale1 = d3.scaleLinear()
+                .domain([mindomain, maxdomain])
+                .range([height, 0]);
+
+            // creating left y axis.
+            var leftAxis = d3.axisLeft(yLinearScale1);
+        }
+        else {
+            
+            if(d3.max(firstcountry, d => d[inputValue]) > d3.max(secondcountry, d => d[inputValue])) {
+                var yLinearScale1 = d3.scaleLinear()
+                .domain([0, d3.max(firstcountry, d => d[inputValue])])
+                .range([height, 0]);
+                
+                // creating left y axis.
+                var leftAxis = d3.axisLeft(yLinearScale1);
+            }
+            else {
+                var yLinearScale1 = d3.scaleLinear()
+                .domain([0, d3.max(secondcountry, d => d[inputValue])])
+                .range([height, 0]);
+                
+                // creating left y axis.
+                var leftAxis = d3.axisLeft(yLinearScale1);
+            }
+        };
+        
         // appending x axis to svg html element.
         chartGroup.append('g')
             .attr('transform', `translate(0, ${height})`)
             .call(bottomAxis);
-
-        // appending the left y axis to y scale.
+        
+        // appending left y axis to svg html element.
         chartGroup.append('g')
             .classed('green', true)
             .call(leftAxis);
 
-        // appending the right y axis to the y scale.
-        chartGroup.append('g')
-            .classed('blue', true)
-            .attr('transform', `translate(${width}, 0)`)
-            .call(rightAxis);
-        
         // creating a line based on variable data type such as unemployment.
         var line1 = d3.line()
             .x(d => xTimeScale(parseTime(d.year)))
-            .y(d => yLinearScale1(d[inputValue1]));
-
-        // creating a line based on a second variable data type such as government spending.
-        var line2 = d3.line()
-            .x(d => xTimeScale(parseTime(d.year)))
-            .y(d => yLinearScale2(d[inputValue2]));
-
-        // appending the first line to the svg html element.
+            .y(d => yLinearScale1(d[inputValue]));
+        
+        // appending a line to svg element based on firstcountry varaibles data.
         chartGroup.append('path')
-            .data([countryvalue])
+            .data([firstcountry])
             .attr('d', line1)
             .classed('line green', true);
 
-        // appending the second line to the svg element.
+        // appending a line to svg element based on countrycountry varaibles data.
         chartGroup.append('path')
-            .data([countryvalue])
-            .attr('d', line2)
+            .data([secondcountry])
+            .attr('d', line1)
             .classed('line blue', true);
-
-           
-        var tooltip = d3.select('#tooltip');
-        // const tooltipLine = chartGroup.append('line');
-
         
+        var tooltip = d3.select('#tooltip1');
+
         var tipBox = chartGroup.append('rect')
             .attr('width', width)
             .attr('height', height)
             .attr('opacity', 0)
-            .on('mousemove', drawTooltip)
-            .on('mouseout', removeTooltip);
+            .on('mousemove', drawTooltip1)
+            .on('mouseout', removeTooltip1);
 
-        function removeTooltip() {
+        function removeTooltip1() {
             if (tooltip) tooltip.style('display', 'none');
         }
 
-        function drawTooltip() {
+        function drawTooltip1() {
 
             var x0 = reverseparseTime(xTimeScale.invert(d3.mouse(this)[0]))
             
-            tooltip.html(countryvaluename + ' ' + x0)
+            tooltip.html(inputValue + ' ' + x0)
                 .style('display', 'block')
-                .data(countryvalue)
+                .data(firstcountry)
+                .data(secondcountry)
                 .append('div')
-                .html(`${inputValue1}:  ${countryvalue.find(h => h.year === x0)[inputValue1]}
-                <br> ${inputValue2}:   ${countryvalue.find(h => h.year === x0)[inputValue2]}</br>`)
+                .html(`${firstcountryvaluename}: ${firstcountry.find(h => h.year === x0)[inputValue]}
+                <br>${secondcountryvaluename}: ${secondcountry.find(h => h.year === x0)[inputValue]}</br>`)
         }
 
     }).catch(function(error) {
@@ -507,19 +517,14 @@ function handleChange() {
     });
 };
 // --------------------------------------------------------------------------------------------------------------------------
-// creating the operations that will change the graph on the front end.  
+// creating the operations that will change the graph on the front end. 
 
-// selecting a html element.
-var button1 = d3.select('#selDataset1');
+// selecting a html element.  
+var button3 = d3.select('#selDataset3');
 // performing button change based on the handleChange function created above based on selected data type. 
-button1.on('change', handleChange);
+button3.on('change', handleChange2);
 
-// doing same thing directly above.
-var button2 = d3.select('#selDataset2');
-button2.on('change', handleChange);
+// doing same thign as above, but changeing information based on both country name inputs.
+var firstcountrybutton = d3.select('#filter-btn1');
+firstcountrybutton.on('click', handleChange2);
 
-// doing same thign as above, but changeing information based on country name input.
-var countrybutton = d3.select('#filter-btn');
-countrybutton.on('click', handleChange);
-
-// ----------------------------------------------------------------------------------------------------------------
