@@ -5,6 +5,7 @@ import json
 from bson import json_util
 from bson.json_util import dumps
 from flask_cors import CORS
+import worlbank_data_function
 
 # initializing flask app.
 app = Flask(__name__)
@@ -19,6 +20,7 @@ mongo = PyMongo(app)
 
 # creating function that will return mongodb data into a json object dataset.
 def jsondata():
+    worlbank_data_function.updateDB()
     # finding the mongo data and saving to a variable.
     data = mongo.db.worldbank_data.find()
     # creating empty list to store data.
