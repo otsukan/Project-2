@@ -20,7 +20,7 @@ mongo = PyMongo(app)
 
 # creating function that will return mongodb data into a json object dataset.
 def jsondata():
-    # worlbank_data_function.updateDB()
+    worlbank_data_function.updateDB()
     # finding the mongo data and saving to a variable.
     data = mongo.db.worldbank_data.find()
     # creating empty list to store data.

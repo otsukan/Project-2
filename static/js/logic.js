@@ -323,6 +323,8 @@ function handleChange() {
         // dictionary that holds all of the countries names in question for later use.
         var countries = ['United States', 'China', 'Korea, Rep.', 'Russian Federation', 'Brazil', 'Germany', 'India', 'Singapore', 'Japan', 'Kenya', 'Mexico', 'Panama', 'Australia', 'Netherlands', 'Norway', 'Finland', 'Sweden', 'Switzerland', 'France', 'Spain', 'United Kingdom', 'Indonesia', 'Argentina', 'South Africa', 'Colombia', 'Denmark', 'Iceland', 'United Arab Emirates', 'Saudi Arabia', 'Canada', 'Luxembourg']
         
+        var selectElement = d3.select("#select-countries")
+        countries.map(country => selectElement.append("<option value=" + country + ">" + country + "</option>"))
     // the below process is a bunch of loops that transform the whole formatting of the json object from the flask api into a more convenient and usable form. 
         
         // looping through the countries list.
