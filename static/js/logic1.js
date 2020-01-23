@@ -34,7 +34,7 @@ function init() {
         // outtermost dictionary.
         var compiled = {}
         // dictionary that holds all of the countries names in question for later use.
-        var countries = ['United States', 'China', 'Korea, Rep.', 'Russian Federation', 'Brazil', 'Germany', 'India', 'Singapore', 'Japan', 'Kenya', 'Mexico', 'Panama', 'Australia', 'Netherlands', 'Norway', 'Finland', 'Sweden', 'Switzerland', 'France', 'Spain', 'United Kingdom', 'Indonesia', 'Argentina', 'South Africa', 'Colombia', 'Denmark', 'Iceland', 'United Arab Emirates', 'Saudi Arabia']
+        var countries = ['United States', 'China', 'Korea, Rep.', 'Russian Federation', 'Brazil', 'Germany', 'India', 'Singapore', 'Japan', 'Kenya', 'Mexico', 'Panama', 'Australia', 'Netherlands', 'Norway', 'Finland', 'Sweden', 'Switzerland', 'France', 'Spain', 'United Kingdom', 'Indonesia', 'Argentina', 'South Africa', 'Colombia', 'Denmark', 'Iceland', 'United Arab Emirates', 'Saudi Arabia', 'Canada', 'Luxembourg']
         
     // the below process is a bunch of loops that transform the whole formatting of the json object from the flask api into a more convenient and usable form. 
         
@@ -98,6 +98,45 @@ function init() {
                                     else if(metric === 'Gross capital formation (% of GDP)') {
                                         // appending toinnermost dictionary.
                                         innerdict["capital_formation"] = data[j][key];
+                                    }
+                                    else if(metric === 'Broad money (% of GDP)') {
+                                        // appending toinnermost dictionary.
+                                        innerdict["broadmoney_supply"] = data[j][key];
+                                    }
+                                    // finding data related to exports.
+                                    else if(metric === 'Exports of goods and services (% of GDP)') {
+                                        // appending toinnermost dictionary.
+                                        innerdict["exports_%gdp"] = data[j][key];
+                                    }
+                                    // finding data related to consumer spending % gdp.
+                                    else if(metric === 'Final consumption expenditure (% of GDP)') {
+                                        // appending toinnermost dictionary.
+                                        innerdict["finalconsumption_%gdp"] = data[j][key];
+                                    }
+                                    // finding data related to consumer spending % gdp.
+                                    else if(metric === 'Domestic credit to private sector (% of GDP)') {
+                                        // appending toinnermost dictionary.
+                                        innerdict["private_credit"] = data[j][key];
+                                    }
+                                    // finding data related to savings rate % gdp.
+                                    else if(metric === 'Gross savings (% of GDP)') {
+                                    // appending toinnermost dictionary.
+                                    innerdict["savings rate % gdp"] = data[j][key];
+                                    }
+                                    // finding data related to income share of lowest 20%.
+                                    else if(metric === 'Income share held by lowest 20%') {
+                                    // appending toinnermost dictionary.
+                                    innerdict["income share of lowest 20%"] = data[j][key];
+                                    }
+                                    // finding data related to foreign investment % gdp.
+                                    else if(metric === 'Foreign direct investment, net inflows (% of GDP)') {
+                                    // appending toinnermost dictionary.
+                                    innerdict["foreign investment % gpd"] = data[j][key];
+                                    }
+                                    // finding data related to per capita gdp.
+                                    else if(metric === 'GDP per capita (current US$)') {
+                                    // appending toinnermost dictionary.
+                                    innerdict["per capita gdp"] = data[j][key];
                                     };
                                 });
                             };
@@ -280,7 +319,7 @@ function handleChange2() {
         // outtermost dictionary.
         var compiled = {}
         // dictionary that holds all of the countries names in question for later use.
-        var countries = ['United States', 'China', 'Korea, Rep.', 'Russian Federation', 'Brazil', 'Germany', 'India', 'Singapore', 'Japan', 'Kenya', 'Mexico', 'Panama', 'Australia', 'Netherlands', 'Norway', 'Finland', 'Sweden', 'Switzerland', 'France', 'Spain', 'United Kingdom', 'Indonesia', 'Argentina', 'South Africa', 'Colombia', 'Denmark', 'Iceland', 'United Arab Emirates', 'Saudi Arabia']
+        var countries = ['United States', 'China', 'Korea, Rep.', 'Russian Federation', 'Brazil', 'Germany', 'India', 'Singapore', 'Japan', 'Kenya', 'Mexico', 'Panama', 'Australia', 'Netherlands', 'Norway', 'Finland', 'Sweden', 'Switzerland', 'France', 'Spain', 'United Kingdom', 'Indonesia', 'Argentina', 'South Africa', 'Colombia', 'Denmark', 'Iceland', 'United Arab Emirates', 'Saudi Arabia', 'Canada', 'Luxembourg']
         
     // the below process is a bunch of loops that transform the whole formatting of the json object from the flask api into a more convenient and usable form. 
         
@@ -344,6 +383,45 @@ function handleChange2() {
                                     else if(metric === 'Gross capital formation (% of GDP)') {
                                         // appending toinnermost dictionary.
                                         innerdict["capital_formation"] = data[j][key];
+                                    }
+                                    else if(metric === 'Broad money (% of GDP)') {
+                                        // appending toinnermost dictionary.
+                                        innerdict["broadmoney_supply"] = data[j][key];
+                                    }
+                                     // finding data related to exports.
+                                    else if(metric === 'Exports of goods and services (% of GDP)') {
+                                        // appending toinnermost dictionary.
+                                        innerdict["exports_%gdp"] = data[j][key];
+                                    }
+                                    // finding data related to consumer spending % gdp.
+                                    else if(metric === 'Final consumption expenditure (% of GDP)') {
+                                        // appending toinnermost dictionary.
+                                        innerdict["finalconsumption_%gdp"] = data[j][key];
+                                    }
+                                    // finding data related to consumer spending % gdp.
+                                    else if(metric === 'Domestic credit to private sector (% of GDP)') {
+                                        // appending toinnermost dictionary.
+                                        innerdict["private_credit"] = data[j][key];
+                                    }
+                                    // finding data related to savings rate % gdp.
+                                    else if(metric === 'Gross savings (% of GDP)') {
+                                    // appending toinnermost dictionary.
+                                    innerdict["savings rate % gdp"] = data[j][key];
+                                    }
+                                    // finding data related to income share of lowest 20%.
+                                    else if(metric === 'Income share held by lowest 20%') {
+                                    // appending toinnermost dictionary.
+                                    innerdict["income share of lowest 20%"] = data[j][key];
+                                    }
+                                    // finding data related to foreign investment % gdp.
+                                    else if(metric === 'Foreign direct investment, net inflows (% of GDP)') {
+                                    // appending toinnermost dictionary.
+                                    innerdict["foreign investment % gpd"] = data[j][key];
+                                    }
+                                    // finding data related to per capita gdp.
+                                    else if(metric === 'GDP per capita (current US$)') {
+                                        // appending toinnermost dictionary.
+                                        innerdict["per capita gdp"] = data[j][key];
                                     };
                                 });
                             };
