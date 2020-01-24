@@ -8,47 +8,89 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head> 
 
-<body>
+<body style='background-color:ghostwhite'>
     
-    <div class='container'>
+  <div class='container'>
     <div class='row'>
       <div class='col-md-12 jumbotron text-center' style='background:black'>
-        <h2 style='color:white'>Economic Stuff Dashboard</h2>
+        <h2 style='color:white'>Macroeconomic Dashboard</h2>
         <p style='color:white'>Use the interactive charts below and discover some economics</p>
       </div>
+      <img src='https://economics.rutgers.edu/media/nextend/cache/image/static/86791d260292d4b814472c3340fcf3e2.jpg' height='250px' width='100%' alt='economics'>
     </div>
-    <div class='row'>
-      <div style="border-style:solid" id='first' class='col-md-6'>
-        <select  id='selDataset1'></select> 
-        <select  id='selDataset2'></select>
-        <div id='tooltip' style='position:relative;background-color:black;color:white;padding:5px;font-size:13px;'></div>
+    <h2 style='margin-top:50px;'>Historical Metric v Metric</h2>
+    <div class='row' style='margin-top:20px;'>
+      <div id='first' class='col-xs-6' style="border-style:solid;height:100%;">
         <div id='map-id'></div>
-        <button id="filter-btn" type="button">Filter</button>
-        <input id="country-name" type="text" placeholder="United States">
       </div>
-      <div style="border-style:solid" id='second' class='col-md-6'>
-        <button id="filter-btn1" type="button">Filter</button>
-        <input id="country-name1" type="text" placeholder="United States">
-        <input id="country-name2" type="text" placeholder="China">
-        <div id='tooltip1' style='position:relative;background-color:black;color:white;padding:5px;font-size:13px;'></div>
-        <div id='map-id'></div>
-        <select id='selDataset3'></select> 
+      <div class='col-xs-6'>
+        <select id='selDataset1'></select> 
+        <select style='margin-top:10px' id='selDataset2'></select>
+        <select style='margin-top:20px; margin-bottom:10px;' id='countries'></select>
+        <div id='tooltip' style='position:relative;background-color:black;color:white;padding:10px;font-size:medium; margin-top:10px;'></div>
+        <div style='border-style:solid;'>
+          <h4 style='margin-top:10px;'>Legend</h4>
+          <div class='row' id='legend' style='margin-top:5px;'>
+            <div class='col-md-5'>
+              <p id='country1' class='container-fluid' style='font-size:small'></p><span class='key-dot country1'></span>
+            </div>
+            <div class='col-md-5'>
+              <p id='country2' class='container-fluid' style='font-size:small'></p><span class='key-dot country2'></span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class='row' style='margin-top: 100px;'>
-      <div class='col-md-12'>
+    <hr style='border: .5px solid black'></hr>
+    <h2 align='right'>Historical Country v Country</h2>
+    <div class='row container-fluid' style='margin-top:50px;'>
+      <div class='col-xs-6'>
+        <select id='countries1' style='margin-right: 10px;'></select>
+        <select id='countries2'></select>
+        <select id='selDataset3' style='margin-top:20px; margin-bottom:10px;width:100%'></select> 
+        <div id='tooltip1' style='position:relative;background-color:black;color:white;padding:10px;font-size:medium; margin-top:10px;'></div>
+        <div style='border-style:solid;'>
+          <h4 style='margin-top:10px;'>Legend</h4>
+          <div class='row' id='legend' style='margin-top:5px;'>
+            <div class='col-md-3'>
+              <p id='country3' class='container-fluid' style='font-size:small'></p><span class='key-dot country1'></span>
+            </div>
+            <div class='col-md-3'>
+              <p id='country4' class='container-fluid' style='font-size:small'></p><span class='key-dot country2'></span>
+            </div>
+          </div>
+        </div> 
+      </div>
+      <div  id='second' class='col-xs-6' style="border-style:solid;height:100%;">
+        <div id='map-id'></div>
+      </div>
+    </div>
+    <hr style='border: .5px solid black'></hr>
+    <h2>Country v Country Metrics by Year</h2>
+    <div class='row' style='margin-top: 50px; margin-bottom:100px;border-style:solid;'>
+      <div class='col-md-12' style="border-style:solid">
         <select id="select-country"></select>
         <select id="select-country2"></select>
-        <canvas id="barChart" width="600" height="200"></canvas>
+        <select id="select-year"></select>
+        <div id='chartjs' class= 'container'>
+          <canvas id="barChart" width="600" height="200"></canvas>
+        </div>
       </div>
     </div>
+    <div style='margin-top:-80px'>
+      <img src='https://ur.coach/wp-content/uploads/2017/01/Macroeconomics_Uni_1_Zahra.jpeg' alt='econ' height='200px' width='100%'>
+    </div>
+    <footer class='footer'>
+      <p>Brought to you by Michael Dutton, Matthew Kacmarski, Nathan Otsuka.</p>
+      <p>Data provided by the World Bank</p>
+    </footer>
   </div>
-  
+ 
+
  
   <!-- D3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>

@@ -2,11 +2,11 @@ function init() {
     // creating the initial outline of the soon to come d3 line graph.
 
     // creating the dimensions of the space in the html that will hold line graphs.
-    var svgWidth = 450;
+    var svgWidth = 600;
     var svgHeight = 300;
 
     // creating a dictionary of margins for dimensions created above.
-    var margin = {top:50, right:40, bottom:20, left:50};
+    var margin = {top:60, right:40, bottom:20, left:50};
 
     // creating the width and height of the soon to come graph so it fits within dimensions created above by using the margins dictionary.
     var width = svgWidth - margin.left - margin.right;
@@ -17,8 +17,7 @@ function init() {
         .select('#second')
         .select('#map-id')
         .append('svg')
-        .attr('width', svgWidth)
-        .attr('height', svgHeight);
+        .attr('viewBox', `0 0 ${svgWidth} ${svgHeight}`);
 
     // creating a chart element within the svg element with a set orientaiton.
     var chartGroup = svg.append('g')
@@ -62,82 +61,62 @@ function init() {
                                     if(metric === 'GDP growth (annual %)') {
                                         // appending inner dictionary with conditional data.
                                         innerdict['year'] = key;
-                                        innerdict['gdp_growth'] = data[j][key]
+                                        innerdict['Gdp Growth Rate'] = data[j][key]
                                     }
                                     // finding data related to government spending.
                                     else if(metric === 'General government final consumption expenditure (% of GDP)') {
                                         // appending to innermost dictionary.
-                                        innerdict['government_spending'] = data[j][key];
+                                        innerdict['Government Spending (% of GDP)'] = data[j][key];
                                     }
                                     // finding data related to unemployment.
                                     else if(metric === 'Unemployment, total (% of total labor force) (modeled ILO estimate)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["unemployment_rate"] = data[j][key];
+                                        innerdict["Unemployment Rate"] = data[j][key];
                                     }
                                     // finding data related to current account.
                                     else if(metric === 'Current account balance (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["current_account"] = data[j][key];
-                                    }
-                                    // finding data related to consumer spending.
-                                    else if(metric === 'Final consumption expenditure (current US$)') {
-                                        // appending toinnermost dictionary.
-                                        innerdict["consumer_spending"] = data[j][key];
-                                    }
-                                    // finding data related to foreign direct investment.
-                                    else if(metric === 'Foreign direct investment, net inflows (BoP, current US$)') {
-                                        // appending toinnermost dictionary.
-                                        innerdict["foreign_investment"] = data[j][key];
-                                    }
-                                    // finding data related to central government debt.
-                                    else if(metric === 'Central government debt, total (% of GDP)') {
-                                        // appending toinnermost dictionary.
-                                        innerdict["government_debt"] = data[j][key];
+                                        innerdict["Current Account (% of GDP)"] = data[j][key];
                                     }
                                     // finding data related to capital formation. 
                                     else if(metric === 'Gross capital formation (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["capital_formation"] = data[j][key];
+                                        innerdict["Gross Capital Formation (% of GDP)"] = data[j][key];
                                     }
                                     else if(metric === 'Broad money (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["broadmoney_supply"] = data[j][key];
+                                        innerdict["Broad Money Supply (% of GDP)"] = data[j][key];
                                     }
-                                    // finding data related to exports.
+                                     // finding data related to exports.
                                     else if(metric === 'Exports of goods and services (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["exports_%gdp"] = data[j][key];
+                                        innerdict["Exports of Goods and Services (% of GDP)"] = data[j][key];
                                     }
                                     // finding data related to consumer spending % gdp.
                                     else if(metric === 'Final consumption expenditure (% of GDP)') {
-                                        // appending toinnermost dictionary.
-                                        innerdict["finalconsumption_%gdp"] = data[j][key];
+                                    // appending toinnermost dictionary.
+                                    innerdict["Final Consumption Expenditure (% of GDP)"] = data[j][key];
                                     }
                                     // finding data related to consumer spending % gdp.
-                                    else if(metric === 'Domestic credit to private sector (% of GDP)') {
+                                    else if(metric === 'Domestic Credit to private sector (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["private_credit"] = data[j][key];
+                                        innerdict["Domestic credit to Private Sector (% of GDP)"] = data[j][key];
                                     }
                                     // finding data related to savings rate % gdp.
                                     else if(metric === 'Gross savings (% of GDP)') {
                                     // appending toinnermost dictionary.
-                                    innerdict["savings rate % gdp"] = data[j][key];
+                                    innerdict['Gross savings (% of GDP)'] = data[j][key];
                                     }
                                     // finding data related to income share of lowest 20%.
                                     else if(metric === 'Income share held by lowest 20%') {
                                     // appending toinnermost dictionary.
-                                    innerdict["income share of lowest 20%"] = data[j][key];
+                                    innerdict['Income share held by lowest 20%'] = data[j][key];
                                     }
                                     // finding data related to foreign investment % gdp.
                                     else if(metric === 'Foreign direct investment, net inflows (% of GDP)') {
                                     // appending toinnermost dictionary.
-                                    innerdict["foreign investment % gpd"] = data[j][key];
+                                    innerdict["Foreign direct investment, net inflows (% of GDP)"] = data[j][key];
                                     }
-                                    // finding data related to per capita gdp.
-                                    else if(metric === 'GDP per capita (current US$)') {
-                                    // appending toinnermost dictionary.
-                                    innerdict["per capita gdp"] = data[j][key];
-                                    };
                                 });
                             };
                         });
@@ -172,6 +151,14 @@ function init() {
             cell.text(factors[i]);
             cell.value = factors[i];
         }
+
+        // adding the first dropdown menu for the countries.
+        var selectElement = d3.select("#countries1");
+        countries.forEach(country => selectElement.append("option").attr("value", country).text(country));
+
+        // adding the second dropdown menu for the countries.
+        var selectElement1 = d3.select("#countries2");
+        countries.forEach(country => selectElement1.append("option").attr("value", country).text(country));
     // ----------------------------------------------------------------------------------------------------------------------
     // creating the initial line graph.
 
@@ -191,16 +178,16 @@ function init() {
             .range([0, width]);
 
         // creating a y scale and y axis based on the first or second variable country's gdp. Used if then statement for different data type reasons.
-        if(d3.max(firstcountry, d => d.gdp_growth) - d3.min(firstcountry, d => d.gdp_growth) > (d3.max(secondcountry, d => d.gdp_growth) - d3.min(secondcountry, d => d.gdp_growth))) {
+        if(d3.max(firstcountry, d => d['Gdp Growth Rate']) - d3.min(firstcountry, d => d['Gdp Growth Rate']) > (d3.max(secondcountry, d => d['Gdp Growth Rate']) - d3.min(secondcountry, d => d['Gdp Growth Rate']))) {
             var yLinearScale1 = d3.scaleLinear()
-            .domain([d3.min(firstcountry, d => d.gdp_growth), d3.max(firstcountry, d => d.gdp_growth)])
+            .domain([d3.min(firstcountry, d => d['Gdp Growth Rate']), d3.max(firstcountry, d => d['Gdp Growth Rate'])])
             .range([height, 0]);
 
             var leftAxis = d3.axisLeft(yLinearScale1);
         }
         else {
             var yLinearScale1 = d3.scaleLinear()
-            .domain([d3.min(secondcountry, d => d.gdp_growth), d3.max(secondcountry, d => d.gdp_growth)])
+            .domain([d3.min(secondcountry, d => d['Gdp Growth Rate']), d3.max(secondcountry, d => d['Gdp Growth Rate'])])
             .range([height, 0]);
 
             var leftAxis = d3.axisLeft(yLinearScale1);
@@ -222,7 +209,7 @@ function init() {
         // creating a line based on gpd.
         var line1 = d3.line()
             .x(d => xTimeScale(parseTime(d.year)))
-            .y(d => yLinearScale1(d.gdp_growth));
+            .y(d => yLinearScale1(d['Gdp Growth Rate']));
         
         // appending a line to svg element based on firstcountry varaibles data.
         chartGroup.append('path')
@@ -243,24 +230,23 @@ function init() {
             .attr('height', height)
             .attr('opacity', 0)
             .on('mousemove', drawTooltip1)
-            .on('mouseout', removeTooltip1);
-
-        function removeTooltip1() {
-            if (tooltip) tooltip.style('display', 'none');
-        }
 
         function drawTooltip1() {
 
             var x0 = reverseparseTime(xTimeScale.invert(d3.mouse(this)[0]))
             
-            tooltip.html('Gdp Growth ' + x0)
+            tooltip.html('Gdp Growth Rate ' + x0)
                 .style('display', 'block')
                 .data(firstcountry)
                 .data(secondcountry)
                 .append('div')
-                .html(`United States: ${firstcountry.find(h => h.year === x0).gdp_growth}
-                <br>China: ${secondcountry.find(h => h.year === x0).gdp_growth}</br>`)
+                .html(`United States: ${firstcountry.find(h => h.year === x0)['Gdp Growth Rate']}
+                <br>China: ${secondcountry.find(h => h.year === x0)['Gdp Growth Rate']}</br>`)
         }
+
+    // adding a legend.
+    d3.select('#country3').text(Object.keys(data)[0])
+    d3.select('#country4').text(Object.keys(data)[1])
 
     }).catch(function(error) {
         console.log(error);
@@ -286,12 +272,11 @@ function handleChange2() {
 // creating the initial outline of the soon to come d3 line graph.
 
     // creating the dimensions of the space in the html that will hold line graphs.
-    var svgWidth = 450;
+    var svgWidth = 600;
     var svgHeight = 300;
 
     // creating a dictionary of margins for dimensions created above.
-    var margin = {top:50, right:40, bottom:20, left:50};
-
+    var margin = {top:60, right:40, bottom:20, left:50};
     // creating the width and height of the soon to come graph so it fits within dimensions created above by using the margins dictionary.
     var width = svgWidth - margin.left - margin.right;
     var height = svgHeight - margin.top - margin.bottom;
@@ -301,8 +286,7 @@ function handleChange2() {
         .select('#second')
         .select('#map-id')
         .append('svg')
-        .attr('width', svgWidth)
-        .attr('height', svgHeight);
+        .attr('viewBox', `0 0 ${svgWidth} ${svgHeight}`);
 
     // creating a chart element within the svg element with a set orientaiton.
     var chartGroup = svg.append('g')
@@ -347,82 +331,62 @@ function handleChange2() {
                                     if(metric === 'GDP growth (annual %)') {
                                         // appending inner dictionary with conditional data.
                                         innerdict['year'] = key;
-                                        innerdict['gdp_growth'] = data[j][key]
+                                        innerdict['Gdp Growth Rate'] = data[j][key]
                                     }
                                     // finding data related to government spending.
                                     else if(metric === 'General government final consumption expenditure (% of GDP)') {
                                         // appending to innermost dictionary.
-                                        innerdict['government_spending'] = data[j][key];
+                                        innerdict['Government Spending (% of GDP)'] = data[j][key];
                                     }
                                     // finding data related to unemployment.
                                     else if(metric === 'Unemployment, total (% of total labor force) (modeled ILO estimate)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["unemployment_rate"] = data[j][key];
+                                        innerdict["Unemployment Rate"] = data[j][key];
                                     }
-                                     // finding data related to current account.
-                                     else if(metric === 'Current account balance (% of GDP)') {
+                                    // finding data related to current account.
+                                    else if(metric === 'Current account balance (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["current_account"] = data[j][key];
+                                        innerdict["Current Account (% of GDP)"] = data[j][key];
                                     }
-                                    // finding data related to consumer spending.
-                                    else if(metric === 'Final consumption expenditure (current US$)') {
-                                        // appending toinnermost dictionary.
-                                        innerdict["consumer_spending"] = data[j][key];
-                                    }
-                                    // finding data related to foreign direct investment.
-                                    else if(metric === 'Foreign direct investment, net inflows (BoP, current US$)') {
-                                        // appending toinnermost dictionary.
-                                        innerdict["foreign_investment"] = data[j][key];
-                                    }
-                                    // finding data related to goverment debt.
-                                    else if(metric === 'Central government debt, total (% of GDP)') {
-                                        // appending toinnermost dictionary.
-                                        innerdict["government_debt"] = data[j][key];
-                                    }
-                                    // finding data related to capital accumulation.
+                                    // finding data related to capital formation. 
                                     else if(metric === 'Gross capital formation (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["capital_formation"] = data[j][key];
+                                        innerdict["Gross Capital Formation (% of GDP)"] = data[j][key];
                                     }
                                     else if(metric === 'Broad money (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["broadmoney_supply"] = data[j][key];
+                                        innerdict["Broad Money Supply (% of GDP)"] = data[j][key];
                                     }
                                      // finding data related to exports.
                                     else if(metric === 'Exports of goods and services (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["exports_%gdp"] = data[j][key];
+                                        innerdict["Exports of Goods and Services (% of GDP)"] = data[j][key];
                                     }
                                     // finding data related to consumer spending % gdp.
                                     else if(metric === 'Final consumption expenditure (% of GDP)') {
-                                        // appending toinnermost dictionary.
-                                        innerdict["finalconsumption_%gdp"] = data[j][key];
+                                    // appending toinnermost dictionary.
+                                    innerdict["Final Consumption Expenditure (% of GDP)"] = data[j][key];
                                     }
                                     // finding data related to consumer spending % gdp.
                                     else if(metric === 'Domestic credit to private sector (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["private_credit"] = data[j][key];
+                                        innerdict["Domestic Credit to Private Sector (% of GDP)"] = data[j][key];
                                     }
                                     // finding data related to savings rate % gdp.
                                     else if(metric === 'Gross savings (% of GDP)') {
                                     // appending toinnermost dictionary.
-                                    innerdict["savings rate % gdp"] = data[j][key];
+                                    innerdict['Gross savings (% of GDP)'] = data[j][key];
                                     }
                                     // finding data related to income share of lowest 20%.
                                     else if(metric === 'Income share held by lowest 20%') {
                                     // appending toinnermost dictionary.
-                                    innerdict["income share of lowest 20%"] = data[j][key];
+                                    innerdict['Income share held by lowest 20%'] = data[j][key];
                                     }
                                     // finding data related to foreign investment % gdp.
                                     else if(metric === 'Foreign direct investment, net inflows (% of GDP)') {
                                     // appending toinnermost dictionary.
-                                    innerdict["foreign investment % gpd"] = data[j][key];
+                                    innerdict["Foreign direct investment, net inflows (% of GDP)"] = data[j][key];
                                     }
-                                    // finding data related to per capita gdp.
-                                    else if(metric === 'GDP per capita (current US$)') {
-                                        // appending toinnermost dictionary.
-                                        innerdict["per capita gdp"] = data[j][key];
-                                    };
                                 });
                             };
                         });
@@ -437,7 +401,7 @@ function handleChange2() {
         compiled[countries[k].toString()] = dict
         };
         // viewing the final hewly formmated compiled dictionary.
-    console.log('World Bank Data', compiled);
+        console.log('World Bank Data', compiled);
 
     // -------------------------------------------------------------------------------------------------------------------------
     //creating a dropdown menu. 
@@ -452,23 +416,22 @@ function handleChange2() {
         // selecting and saving html element to variable.
         var firstcountryinputelement = d3.select('#country-name1')
 
-         // selecting and saving html element to variable.
+        // selecting and saving html element to variable.
         var secondcountryinputelement = d3.select('#country-name2')
         
-        // using if then statement to make firstcountryvalue and secondcountry to have value at the very beginning.
-        if(firstcountryinputelement.property('value') === '') {
-            var firstcountryvaluename = 'United States'
-        }
-        else {
-            var firstcountryvaluename = firstcountryinputelement.property('value')
-        };
+       // adding the first dropdown menu for the countries.
+       var selectElement = d3.select("#countries1");
+       countries.forEach(country => selectElement.append("option").attr("value", country).text(country));
 
-        if(secondcountryinputelement.property('value') === '') {
-            var secondcountryvaluename = 'China'
-        }
-        else {
-            var secondcountryvaluename = secondcountryinputelement.property('value')
-        };
+       // saving selected value on front end to variable.
+       var firstcountryvaluename = selectElement.property('value');
+
+       // adding the second dropdown menu for the countries.
+       var selectElement1 = d3.select("#countries2");
+       countries.forEach(country => selectElement1.append("option").attr("value", country).text(country));
+
+       // saving selected value on front end to variable.
+       var secondcountryvaluename = selectElement1.property('value');
     // ----------------------------------------------------------------------------------------------------------------------
     // creating the initial line graph.
 
@@ -494,7 +457,7 @@ function handleChange2() {
         var bottomAxis = d3.axisBottom(xTimeScale);
 
         // creating a y scale and y axis based on the first or second variable country's gdp. Used if then statement for different data type reasons.
-        if(inputValue === 'gdp_growth' | inputValue === 'current_account') { 
+        if(inputValue === 'Gdp Growth Rate' | inputValue === 'Current Account (% of GDP)') { 
             
             if(d3.max(firstcountry, d => d[inputValue]) > d3.max(secondcountry, d => d[inputValue])) {
                 var maxdomain = d3.max(firstcountry, d => d[inputValue])
@@ -571,11 +534,6 @@ function handleChange2() {
             .attr('height', height)
             .attr('opacity', 0)
             .on('mousemove', drawTooltip1)
-            .on('mouseout', removeTooltip1);
-
-        function removeTooltip1() {
-            if (tooltip) tooltip.style('display', 'none');
-        }
 
         function drawTooltip1() {
 
@@ -590,6 +548,10 @@ function handleChange2() {
                 <br>${secondcountryvaluename}: ${secondcountry.find(h => h.year === x0)[inputValue]}</br>`)
         }
 
+    // adding a legend.
+    d3.select('#country3').text(firstcountryvaluename)
+    d3.select('#country4').text(secondcountryvaluename)
+
     }).catch(function(error) {
         console.log(error);
     });
@@ -602,7 +564,10 @@ var button3 = d3.select('#selDataset3');
 // performing button change based on the handleChange function created above based on selected data type. 
 button3.on('change', handleChange2);
 
-// doing same thign as above, but changeing information based on both country name inputs.
-var firstcountrybutton = d3.select('#filter-btn1');
-firstcountrybutton.on('click', handleChange2);
+// doing same thign as above, but changing information based on both country name inputs.
+var button3 = d3.select('#countries1');
+button3.on('change', handleChange2);
+var button3 = d3.select('#countries2');
+button3.on('change', handleChange2);
+
 
