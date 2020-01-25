@@ -98,9 +98,9 @@ function init() {
                                     innerdict["Final Consumption Expenditure (% of GDP)"] = data[j][key];
                                     }
                                     // finding data related to consumer spending % gdp.
-                                    else if(metric === 'Domestic Credit to private sector (% of GDP)') {
+                                    else if(metric === 'Domestic credit to private sector (% of GDP)') {
                                         // appending toinnermost dictionary.
-                                        innerdict["Domestic credit to Private Sector (% of GDP)"] = data[j][key];
+                                        innerdict["Domestic Credit to Private Sector (% of GDP)"] = data[j][key];
                                     }
                                     // finding data related to savings rate % gdp.
                                     else if(metric === 'Gross savings (% of GDP)') {
